@@ -1,0 +1,424 @@
+/* === ESTILOS GLOBALES - TEMA VERDE/NEGRO === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    color: #00ff41; /* Verde matrix */
+    height: 100vh;
+    overflow: hidden;
+    /* Fondo negro con efecto matrix */
+    background: radial-gradient(circle at center, #0a0a0a 0%, #000000 100%), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><rect width="1000" height="1000" fill="%23000000"/><path d="M0,0 L1000,1000 M1000,0 L0,1000" stroke="%2300ff41" stroke-width="1" stroke-opacity="0.1"/></svg>');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+    /* Efecto de lluvia matrix en el fondo */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient( 0deg, transparent, transparent 2px, rgba(0, 255, 65, 0.03) 2px, rgba(0, 255, 65, 0.03) 4px );
+        pointer-events: none;
+        z-index: -1;
+    }
+
+/* === MARQUESINA MATRIX === */
+.marquee-container {
+    background: linear-gradient(90deg, rgba(0, 255, 65, 0.1) 0%, rgba(0, 255, 65, 0.3) 50%, rgba(0, 255, 65, 0.1) 100%);
+    border-radius: 5px;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border: 1px solid #00ff41;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+    overflow: hidden;
+    position: relative;
+}
+
+    .marquee-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.4), transparent);
+        animation: scan 3s linear infinite;
+    }
+
+@keyframes scan {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+.marquee {
+    display: flex;
+    animation: marquee-scroll 15s linear infinite;
+    white-space: nowrap;
+}
+
+    .marquee span {
+        padding: 0 25px;
+        font-weight: bold;
+        color: #00ff41;
+        text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41;
+        font-size: 1.1em;
+    }
+
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* === HEADER CYBERPUNK === */
+.app-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+    .app-header h1 {
+        font-size: 3.5em;
+        margin-bottom: 10px;
+        color: #00ff41;
+        text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41, 0 0 30px #00ff41;
+        font-weight: 900;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        position: relative;
+    }
+
+        .app-header h1::after {
+            content: '_';
+            animation: blink 1s infinite;
+        }
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+
+    51%, 100% {
+        opacity: 0;
+    }
+}
+
+.app-header p {
+    font-size: 1.3em;
+    color: #00ff41;
+    text-shadow: 0 0 5px #00ff41;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+/* === CONTENEDOR PRINCIPAL CYBER === */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 20px;
+    gap: 20px;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid #00ff41;
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.2), inset 0 0 30px rgba(0, 255, 65, 0.1);
+    position: relative;
+}
+
+    /* Efecto de borde brillante */
+    .app-container::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #00ff41, #00cc33, #009926, #00ff41);
+        border-radius: 12px;
+        z-index: -1;
+        animation: border-glow 3s linear infinite;
+        background-size: 400%;
+    }
+
+@keyframes border-glow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* === NAVEGACIÓN CYBER === */
+.navigation {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #00ff41;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+}
+
+.nav-btn {
+    padding: 12px 30px;
+    border: 1px solid #00ff41;
+    border-radius: 5px;
+    background: rgba(0, 255, 65, 0.1);
+    color: #00ff41;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+    .nav-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.4), transparent);
+        transition: left 0.5s;
+    }
+
+    .nav-btn:hover::before {
+        left: 100%;
+    }
+
+    .nav-btn.active,
+    .nav-btn:hover {
+        background: rgba(0, 255, 65, 0.2);
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.4), inset 0 0 15px rgba(0, 255, 65, 0.1);
+        text-shadow: 0 0 10px #00ff41;
+        transform: translateY(-2px);
+    }
+
+/* === PANELES DE CONTENIDO CYBER === */
+.main-content {
+    display: flex;
+    flex: 1;
+    gap: 25px;
+}
+
+.tab-content {
+    display: none;
+    width: 100%;
+    gap: 25px;
+}
+
+    .tab-content.active {
+        display: flex;
+    }
+
+.matrix-controls, .control-panel {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #00ff41;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.1), inset 0 0 20px rgba(0, 255, 65, 0.05);
+    color: #00ff41;
+}
+
+.visualization-panel {
+    flex: 2;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #00ff41;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.1), inset 0 0 20px rgba(0, 255, 65, 0.05);
+    display: flex;
+    flex-direction: column;
+    color: #00ff41;
+}
+
+/* === ESTILOS PARA MATRICES CYBER === */
+.size-selector {
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(0, 255, 65, 0.05);
+    border-radius: 5px;
+    border: 1px solid #00ff41;
+}
+
+    .size-selector label {
+        font-weight: 600;
+        margin-right: 15px;
+        color: #00ff41;
+        text-shadow: 0 0 5px #00ff41;
+    }
+
+    .size-selector select {
+        padding: 8px 15px;
+        border: 1px solid #00ff41;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #00ff41;
+        font-family: 'Courier New', monospace;
+    }
+
+        .size-selector select:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+.matrices-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 25px 0;
+}
+
+.matrix-input {
+    padding: 20px;
+    background: rgba(0, 255, 65, 0.05);
+    border-radius: 5px;
+    border: 1px solid #00ff41;
+    box-shadow: inset 0 0 15px rgba(0, 255, 65, 0.1);
+}
+
+    .matrix-input h4 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #00ff41;
+        text-shadow: 0 0 10px #00ff41;
+        font-size: 1.2em;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+.matrix-grid {
+    display: grid;
+    gap: 10px;
+    justify-content: center;
+}
+
+.matrix-grid-2x2 {
+    grid-template-columns: repeat(2, 70px);
+}
+
+.matrix-grid-3x3 {
+    grid-template-columns: repeat(3, 70px);
+}
+
+.matrix-cell input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #00ff41;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #00ff41;
+    font-family: 'Courier New', monospace;
+    transition: all 0.3s ease;
+}
+
+    .matrix-cell input:focus {
+        outline: none;
+        border-color: #00ff41;
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+        background: rgba(0, 255, 65, 0.1);
+    }
+
+.matrix-operations {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 25px;
+}
+
+    .matrix-operations button {
+        padding: 12px;
+        border: 1px solid #00ff41;
+        border-radius: 5px;
+        background: rgba(0, 255, 65, 0.1);
+        color: #00ff41;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        font-family: 'Courier New', monospace;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .matrix-operations button:hover {
+            background: rgba(0, 255, 65, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.4), inset 0 0 20px rgba(0, 255, 65, 0.1);
+            text-shadow: 0 0 10px #00ff41;
+            transform: translateY(-2px);
+        }
+
+/* === RESULTADOS CYBER === */
+.results-output {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(0, 255, 65, 0.05);
+    border-radius: 5px;
+    border: 1px solid #00ff41;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    color: #00ff41;
+    text-shadow: 0 0 5px #00ff41;
+    box-shadow: inset 0 0 15px rgba(0, 255, 65, 0.1);
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+    .app-container {
+        margin: 5px;
+        padding: 15px;
+    }
+
+    .main-content {
+        flex-direction: column;
+    }
+
+    .matrices-container {
+        grid-template-columns: 1fr;
+    }
+
+    .marquee span {
+        font-size: 0.9em;
+    }
+
+    .app-header h1 {
+        font-size: 2.5em;
+    }
+
+    .matrix-operations {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
