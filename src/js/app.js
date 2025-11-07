@@ -44,6 +44,13 @@ class VMatrixApp {
         const gridSize = size === '2x2' ? 'matrix-grid-2x2' : 'matrix-grid-3x3';
         const matrixSize = parseInt(size[0]);
 
+        const matricesContainer = document.querySelector('.matrices-container');
+        if (size === '3x3') {
+            matricesContainer.classList.add('matrices-3x3');
+        } else {
+            matricesContainer.classList.remove('matrices-3x3');
+        }
+
         this.renderMatrix('A', matrixSize, gridSize);
         this.renderMatrix('B', matrixSize, gridSize);
     }
@@ -60,7 +67,25 @@ class VMatrixApp {
                 input.placeholder = '0';
                 input.dataset.row = i;
                 input.dataset.col = j;
+
+                // AGREGAR CLASE PARA ESTILOS CYBERPUNK
+                input.className = 'matrix-cell-input';
+
+                // Placeholder más atractivo
+                const placeholders = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+                input.placeholder = placeholders[(i * size + j) % 10];
+
                 input.addEventListener('input', (e) => this.updateMatrixValue(matrixId, e));
+
+                // Efectos adicionales
+                input.addEventListener('focus', (e) => {
+                    e.target.style.transform = 'scale(1.05)';
+                });
+
+                input.addEventListener('blur', (e) => {
+                    e.target.style.transform = 'scale(1)';
+                });
+
                 container.appendChild(input);
             }
         }

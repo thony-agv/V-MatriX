@@ -72,14 +72,51 @@
 
             <!-- Paneles de Vectores y Gráficos (ocultos por ahora) -->
             <div id="vectors-tab" class="tab-content">
-                <h3>Operaciones Vectoriales - Próximamente</h3>
-            </div>
+                <div class="vector-controls">
+                    <h3>🧭 Operaciones Vectoriales 3D</h3>
 
-            <div id="graphics-tab" class="tab-content">
-                <h3>Gráficos 3D - Próximamente</h3>
+                    <!-- Inputs de vectores -->
+                    <div class="vectors-input">
+                        <div class="vector-input-group">
+                            <h4>Vector A</h4>
+                            <div class="coord-inputs">
+                                <input type="number" id="vectorAx" placeholder="X" value="3">
+                                <input type="number" id="vectorAy" placeholder="Y" value="4">
+                                <input type="number" id="vectorAz" placeholder="Z" value="2">
+                            </div>
+                        </div>
+
+                        <div class="vector-input-group">
+                            <h4>Vector B</h4>
+                            <div class="coord-inputs">
+                                <input type="number" id="vectorBx" placeholder="X" value="1">
+                                <input type="number" id="vectorBy" placeholder="Y" value="-2">
+                                <input type="number" id="vectorBz" placeholder="Z" value="5">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Operaciones vectoriales -->
+                    <div class="vector-operations">
+                        <button id="btnVectorAdd">A + B</button>
+                        <button id="btnVectorSub">A - B</button>
+                        <button id="btnVectorDot">A · B (Punto)</button>
+                        <button id="btnVectorCross">A × B (Cruz)</button>
+                        <button id="btnVectorMagA">|A| (Magnitud)</button>
+                        <button id="btnVectorMagB">|B| (Magnitud)</button>
+                        <button id="btnVectorNormA">A Normalizado</button>
+                        <button id="btnVectorNormB">B Normalizado</button>
+                    </div>
+                </div>
+
+                <div class="visualization-panel">
+                    <h4>🎯 Visualización 3D</h4>
+                    <canvas id="vectorCanvas" width="600" height="500"></canvas>
+                    <div id="vector-results" class="results-output">
+                        <p>Los resultados vectoriales aparecerán aquí...</p>
+                    </div>
+                </div>
             </div>
-        </main>
-    </div>
 
     <script src="js/matrixOperations.js"></script>
     <script src="js/app.js"></script>
