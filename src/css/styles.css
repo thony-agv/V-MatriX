@@ -714,7 +714,7 @@ body {
     font-weight: 700 !important;
     transition: all 0.3s ease !important;
     text-shadow: 0 0 8px #00f0ff !important;
-    box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.1) !important, 0 0 15px rgba(0, 0, 0, 0.6) !important;
+    box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.1), 0 0 15px rgba(0, 0, 0, 0.6) !important;
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
     appearance: none !important;
@@ -728,9 +728,9 @@ body {
     .matrix-cell-input:focus {
         border-color: #0099ff !important;
         background: linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(0, 153, 255, 0.25) 100%) !important;
-        box-shadow: inset 0 0 25px rgba(0, 240, 255, 0.3) !important, 0 0 30px rgba(0, 240, 255, 0.4) !important, 0 0 20px rgba(0, 153, 255, 0.3) !important;
+        box-shadow: inset 0 0 25px rgba(0, 240, 255, 0.3), 0 0 30px rgba(0, 240, 255, 0.4) !important, 0 0 20px rgba(0, 153, 255, 0.3) !important;
         transform: scale(1.05) !important;
-        text-shadow: 0 0 12px #00f0ff !important, 0 0 24px rgba(0, 240, 255, 0.6) !important;
+        text-shadow: 0 0 12px #00f0ff , 0 0 24px rgba(0, 240, 255, 0.6) !important;
     }
 
     /* Placeholder */
@@ -1294,3 +1294,136 @@ body {
         grid-template-rows: repeat(3, 85px) !important;
     }
 }
+/* === MEJORAS PARA PLACEHOLDERS DE MATRICES === */
+#matrixA-inputs input::placeholder,
+#matrixB-inputs input::placeholder {
+    color: rgba(0, 240, 255, 0.7) !important;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.5) !important, 0 0 16px rgba(0, 240, 255, 0.3) !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    opacity: 0.9 !important;
+}
+
+/* Placeholders específicos para Matriz A */
+#matrixA-inputs input::placeholder {
+    color: rgba(0, 240, 255, 0.8) !important; /* Cian para A */
+}
+
+/* Placeholders específicos para Matriz B */
+#matrixB-inputs input::placeholder {
+    color: rgba(255, 20, 147, 0.8) !important; /* Rosa para B */
+}
+
+/* Efecto cuando el input está vacío y muestra placeholder */
+#matrixA-inputs input:empty::before,
+#matrixB-inputs input:empty::before {
+    content: attr(placeholder);
+    color: inherit;
+}
+
+/* Animación sutil para placeholders */
+@keyframes placeholder-pulse {
+    0%, 100% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 0.9;
+    }
+}
+
+#matrixA-inputs input:focus::placeholder,
+#matrixB-inputs input:focus::placeholder {
+    animation: placeholder-pulse 2s infinite;
+}
+/* === CONTROLES DE GRÁFICOS 3D === */
+.graphics-controls {
+    background: rgba(15, 15, 30, 0.9);
+    padding: 15px;
+    border: 1px solid #00f0ff;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+    .control-group label {
+        color: #00f0ff;
+        font-weight: 600;
+        font-size: 0.9em;
+        text-shadow: 0 0 5px #00f0ff;
+    }
+
+.control-slider {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 240, 255, 0.2);
+    border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+    .control-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        background: #00f0ff;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 0 10px #00f0ff;
+    }
+
+    .control-slider::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        background: #00f0ff;
+        border-radius: 50%;
+        cursor: pointer;
+        border: none;
+        box-shadow: 0 0 10px #00f0ff;
+    }
+
+.control-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: end;
+}
+
+.control-btn {
+    padding: 8px 12px;
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid #00f0ff;
+    color: #00f0ff;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px #00f0ff;
+}
+
+    .control-btn:hover {
+        background: rgba(0, 240, 255, 0.2);
+        box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+        transform: translateY(-1px);
+    }
+
+/* Estilo del canvas */
+#vectorCanvas {
+    border: 2px solid #00f0ff;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.9);
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+    cursor: grab;
+}
+
+    #vectorCanvas:active {
+        cursor: grabbing;
+    }
