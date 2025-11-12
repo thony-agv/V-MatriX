@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <!-- Paneles de Vectores y Gráficos (ocultos por ahora) -->
+           
             <div id="vectors-tab" class="tab-content">
                 <div class="vector-controls">
                     <h3>🧭 Operaciones Vectoriales 3D</h3>
@@ -114,6 +114,112 @@
                     <canvas id="vectorCanvas" width="600" height="500"></canvas>
                     <div id="vector-results" class="results-output">
                         <p>Los resultados vectoriales aparecerán aquí...</p>
+                    </div>
+                </div>
+                <div id="graphics-tab" class="tab-content">
+                    <div class="graphics-controls">
+                        <h3>⚡ Sistema de Partículas 3D</h3>
+
+                        <!-- Configuración de partículas -->
+                        <div class="particle-config">
+                            <div class="config-group">
+                                <label>Número de Partículas:</label>
+                                <div class="slider-container">
+                                    <input type="range" id="particleCount" min="10" max="500" value="50" class="control-slider">
+                                    <span id="countValue" class="slider-value">50</span>
+                                </div>
+                            </div>
+
+                            <div class="config-group">
+                                <label>Velocidad:</label>
+                                <div class="slider-container">
+                                    <input type="range" id="particleSpeed" min="1" max="20" value="5" class="control-slider">
+                                    <span id="speedValue" class="slider-value">5</span>
+                                </div>
+                            </div>
+
+                            <div class="config-group">
+                                <label>Tamaño:</label>
+                                <div class="slider-container">
+                                    <input type="range" id="particleSize" min="1" max="10" value="3" class="control-slider">
+                                    <span id="sizeValue" class="slider-value">3</span>
+                                </div>
+                            </div>
+
+                            <div class="config-group">
+                                <label>Fuerzas:</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" id="gravityForce" checked> Gravedad</label>
+                                    <label><input type="checkbox" id="magneticForce"> Campo Magnético</label>
+                                    <label><input type="checkbox" id="windForce"> Viento</label>
+                                    <label><input type="checkbox" id="vortexForce"> Vórtice</label>
+                                </div>
+                            </div>
+
+                            <div class="config-group">
+                                <label>Comportamiento:</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" id="enableCollisions" checked> Colisiones</label>
+                                    <label><input type="checkbox" id="enableTrails"> Estelas</label>
+                                    <label><input type="checkbox" id="enableGlow"> Efecto Glow</label>
+                                </div>
+                            </div>
+
+                            <div class="config-group">
+                                <label>Color de Partículas:</label>
+                                <select id="particleColor">
+                                    <option value="rainbow">🌈 Arcoíris</option>
+                                    <option value="cyan">🔵 Cian</option>
+                                    <option value="pink">🔴 Rosa</option>
+                                    <option value="gold">🟡 Dorado</option>
+                                    <option value="green">🟢 Verde</option>
+                                    <option value="purple">🟣 Púrpura</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Controles de simulación -->
+                        <div class="simulation-controls">
+                            <button id="startSimulation" class="control-btn">▶️ Iniciar Simulación</button>
+                            <button id="pauseSimulation" class="control-btn">⏸️ Pausar</button>
+                            <button id="resetSimulation" class="control-btn">🔄 Reiniciar</button>
+                            <button id="addParticle" class="control-btn">✨ Agregar 10 Partículas</button>
+                            <button id="clearParticles" class="control-btn">🗑️ Limpiar Todo</button>
+                        </div>
+
+                        <!-- Estadísticas en tiempo real -->
+                        <div class="simulation-stats">
+                            <h4>📈 Estadísticas en Tiempo Real</h4>
+                            <div id="particle-stats">
+                                <p>🟢 Partículas activas: <span id="activeParticles">0</span></p>
+                                <p>⚡ Energía total: <span id="totalEnergy">0</span></p>
+                                <p>🎯 FPS: <span id="fpsCounter">0</span></p>
+                                <p>🕒 Tiempo: <span id="simulationTime">0s</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="visualization-panel">
+                        <div class="particle-header">
+                            <h4>🌌 Simulación de Partículas 3D</h4>
+                            <div class="particle-legend">
+                                <span style="color: #00f0ff">● Partículas</span>
+                                <span style="color: #ff1493">● Colisiones</span>
+                                <span style="color: #ffd700">● Energía Alta</span>
+                            </div>
+                        </div>
+                        <canvas id="particleCanvas" width="800" height="600"></canvas>
+                        <div class="particle-info">
+                            <h5>🔍 Información de Simulación</h5>
+                            <div id="particle-data" class="results-output">
+                                <p>Presiona "Iniciar Simulación" para comenzar...</p>
+                                <p>💡 <strong>Controles:</strong></p>
+                                <p>• 🖱️ Arrastra para rotar la cámara</p>
+                                <p>• 🎯 Rueda del mouse para zoom</p>
+                                <p>• ✨ Click para agregar partículas</p>
+                                <p>• 🗑️ Doble click para limpiar</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
