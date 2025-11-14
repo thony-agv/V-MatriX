@@ -362,3 +362,273 @@ class ParticleSystem {
         }
     } // ... (continuará con los métodos de renderizado y controles de cámara)
 }
+
+// ... (tu código anterior)
+
+project3DTo2D(point3D) {
+    // Rotación en X e Y
+    const cosX = Math.cos(this.rotation.x);
+    const sinX = Math.sin(this.rotation.x);
+    const cosY = Math.cos(this.rotation.y);
+    const sinY = Math.sin(this.rotation.y);
+
+    // Aplicar rotaciones
+    let x = point3D.x;
+    let y = point3D.y * cosX - point3D.z * sinX;
+    let z = point3D.y * sinX + point3D.z * cosX;
+
+    const tempX = x * cosY - z * sinY;
+    const tempZ = x * sinY + z * cosY;
+
+    // Proyección perspectiva
+    const scale = this.scale / (50 + tempZ);
+    const screenX = this.origin.x + tempX * scale;
+    const screenY = this.origin.y - y * scale;
+
+    return {
+        x: screenX,
+        y: screenY,
+        depth: tempZ,
+        scale: scale
+    };
+}
+
+renderParticles() {
+    // Limpiar canvas
+    this.ctx.fillStyle = 'rgba(10, 10, 20, 0.1)';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // Ordenar partículas por profundidad para correcto renderizado
+    const particlesWithDepth = this.particles.map(particle => ({
+        particle,
+        projected: this.project3DTo2D(particle.position)
+    })).sort((a, b) => b.projected.depth - a.projected.depth);
+
+    // Renderizar cada partícula
+    particlesWithDepth.forEach(({ particle, projected }) => {
+        // Renderizar estela si está habilitada
+        if (this.config.enableTrails && particle.trail.length > 1) {
+            this.renderTrail(particle);
+        }
+
+        // Renderizar partícula principal
+        this.renderParticle(particle, projected);
+    });
+
+    // Renderizar información de debug
+    this.renderDebugInfo();
+}
+
+renderTrail(particle) {
+    this.ctx.beginPath();
+
+    // Dibujar la estela como línea conectada
+    for (let i = 0; i < particle.trail.length - 1; i++) {
+        const point1 = this.project3DTo2D(particle.trail[i]);
+        const point2 = this.project3DTo2D(particle.trail[i + 1]);
+
+        if (i === 0) {
+            this.ctx.moveTo(point1.x, point1.y);
+        }
+        this.ctx.lineTo(point2.x, point2.y);
+    }
+
+    // Gradiente de color para la estela
+    const gradient = this.ctx.createLinearGradient(
+        this.project3DTo2D(particle.trail[0]).x,
+        this.project3DTo2D(particle.trail[0]).y,
+        this.project3DTo2D(particle.trail[particle.trail.length - 1]).x,
+        this.project3DTo2D(particle.trail[particle.trail.length - 1]).y
+    );
+
+    gradient.addColorStop(0, particle.color + '80'); // Más opaco al inicio
+    gradient.addColorStop(1, particle.color + '20'); // Más transparente al final
+
+    this.ctx.strokeStyle = gradient;
+    this.ctx.lineWidth = particle.size * 0.3;
+    this.ctx.stroke();
+}
+
+renderParticle(particle, projected) {
+    const size = particle.size * projected.scale;
+
+    // Efecto de brillo si está habilitado
+    if (this.config.enableGlow) {
+        this.ctx.shadowColor = particle.color;
+        this.ctx.shadowBlur = 15 * projected.scale;
+    }
+
+    // Dibujar partícula
+    this.ctx.beginPath();
+    this.ctx.arc(projected.x, projected.y, size, 0, Math.PI * 2);
+
+    // Gradiente radial para efecto 3D
+    const gradient = this.ctx.createRadialGradient(
+        projected.x, projected.y, 0,
+        projected.x, projected.y, size
+    );
+
+    gradient.addColorStop(0, particle.color + 'FF');
+    gradient.addColorStop(0.7, particle.color + 'AA');
+    gradient.addColorStop(1, particle.color + '00');
+
+    this.ctx.fillStyle = gradient;
+    this.ctx.fill();
+
+    // Resetear sombra
+    this.ctx.shadowBlur = 0;
+}
+
+renderDebugInfo() {
+    this.ctx.fillStyle = '#00f0ff';
+    this.ctx.font = '12px Rajdhani, monospace';
+    this.ctx.textAlign = 'left';
+
+    const info = [
+        `Partículas: ${this.particles.length}`,
+        `FPS: ${this.fps}`,
+        `Tiempo: ${this.simulationTime.toFixed(1)}s`,
+        `Rotación: X:${(this.rotation.x * 180 / Math.PI).toFixed(1)}° Y:${(this.rotation.y * 180 / Math.PI).toFixed(1)}°`,
+        `Zoom: ${this.scale.toFixed(1)}`
+    ];
+
+    info.forEach((text, index) => {
+        this.ctx.fillText(text, 10, 20 + index * 18);
+    });
+}
+
+// Controles de cámara
+startDrag(event) {
+    this.isDragging = true;
+    this.lastMouseX = event.clientX;
+    this.lastMouseY = event.clientY;
+    this.canvas.style.cursor = 'grabbing';
+}
+
+drag(event) {
+    if (!this.isDragging) return;
+
+    const deltaX = event.clientX - this.lastMouseX;
+    const deltaY = event.clientY - this.lastMouseY;
+
+    this.rotation.y += deltaX * 0.01;
+    this.rotation.x += deltaY * 0.01;
+
+    // Limitar rotación vertical
+    this.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, this.rotation.x));
+
+    this.lastMouseX = event.clientX;
+    this.lastMouseY = event.clientY;
+}
+
+endDrag() {
+    this.isDragging = false;
+    this.canvas.style.cursor = 'grab';
+}
+
+handleZoom(event) {
+    event.preventDefault();
+    const zoomFactor = event.deltaY > 0 ? 0.9 : 1.1;
+    this.scale = Math.max(5, Math.min(100, this.scale * zoomFactor));
+}
+
+handleKeyPress(event) {
+    switch (event.key) {
+        case ' ':
+            this.isRunning ? this.pause() : this.start();
+            break;
+        case 'r':
+        case 'R':
+            this.reset();
+            break;
+        case 'c':
+        case 'C':
+            this.clearParticles();
+            break;
+        case '+':
+            this.addParticles(10);
+            break;
+        case '-':
+            this.particles = this.particles.slice(0, Math.max(0, this.particles.length - 10));
+            break;
+    }
+}
+
+// Control de la simulación
+start() {
+    if (this.isRunning) return;
+
+    this.isRunning = true;
+    this.lastTime = performance.now();
+    this.animate();
+
+    console.log('▶️ Simulación iniciada');
+}
+
+pause() {
+    this.isRunning = false;
+    console.log('⏸️ Simulación pausada');
+}
+
+reset() {
+    this.particles = [];
+    this.createParticles(this.config.particleCount);
+    this.rotation = { x: 0, y: 0 };
+    this.scale = 25;
+    this.simulationTime = 0;
+
+    console.log('🔄 Simulación reseteada');
+}
+
+clearParticles() {
+    this.particles = [];
+    console.log('🧹 Partículas eliminadas');
+}
+
+animate(currentTime) {
+    if (!this.isRunning) return;
+
+    // Calcular delta time
+    if (!currentTime) currentTime = performance.now();
+    const deltaTime = Math.min(0.1, (currentTime - this.lastTime) / 1000);
+    this.lastTime = currentTime;
+
+    // Actualizar estadísticas
+    this.frameCount++;
+    this.simulationTime += deltaTime;
+
+    // Calcular FPS
+    if (this.simulationTime - this.lastFpsUpdate > 0.5) {
+        this.fps = Math.round(this.frameCount / (this.simulationTime - this.lastFpsUpdate));
+        this.frameCount = 0;
+        this.lastFpsUpdate = this.simulationTime;
+    }
+
+    // Actualizar y renderizar
+    this.updateParticles(deltaTime);
+    this.renderParticles();
+
+    // Continuar animación
+    requestAnimationFrame((time) => this.animate(time));
+}
+
+    // Inicialización automática cuando el DOM esté listo
+    static init() {
+    document.addEventListener('DOMContentLoaded', function () {
+        const canvas = document.getElementById('particleCanvas');
+        if (canvas) {
+            window.particleSystem = new ParticleSystem('particleCanvas');
+
+            // Iniciar automáticamente después de un breve delay
+            setTimeout(() => {
+                window.particleSystem.start();
+            }, 1000);
+        } else {
+            console.error('❌ No se encontró el canvas con id "particleCanvas"');
+        }
+    });
+}
+}
+
+// Inicializar automáticamente
+ParticleSystem.init();
