@@ -1,7 +1,7 @@
 class VMatrixApp {
     constructor() {
         this.matrixCalculator = new MatrixCalculator();
-        this.vectorCalculator = new VectorCalculator(); 
+        this.vectorCalculator = new VectorCalculator();
         this.graphics3D = null; //se inicializa después
         this.init();
     }
@@ -12,13 +12,24 @@ class VMatrixApp {
         this.setupVectorEvents();
         this.createMatrixInputs('2x2');
 
-        // Inicializar gráficos 3D después de que el DOM esté listo
-        setTimeout(() => {
-            this.graphics3D = new Graphics3D();
-        }, 100);
+        // Inicializar gráficos 3D de forma segura
+        try {
+            setTimeout(() => {
+                if (typeof Graphics3D !== 'undefined') {
+                    this.graphics3D = new Graphics3D();
+                    console.log("✅ Gráficos 3D inicializados correctamente");
+                } else {
+                    console.error("❌ Graphics3D no está definido");
+                }
+            }, 500);
+        } catch (error) {
+            console.error("❌ Error inicializando gráficos 3D:", error);
+        }
 
         console.log("✅ V-MatriX inicializado correctamente");
     }
+
+    // MÉTODO FALTANTE - AGREGAR ESTO
     setupVectorEvents() {
         console.log("🔄 Configurando eventos de vectores...");
 
@@ -48,7 +59,28 @@ class VMatrixApp {
             }
         });
 
+        // Configurar controles 3D si existen
+        this.setup3DControls();
+
         console.log("✅ Eventos de vectores configurados");
+    }
+
+    // Método para configurar controles 3D
+    setup3DControls() {
+        console.log("🎮 Configurando controles 3D...");
+
+        // Los controles 3D se configuran automáticamente en Graphics3D
+        // Pero podemos agregar verificación aquí
+        setTimeout(() => {
+            const resetBtn = document.getElementById('resetView');
+            const gridBtn = document.getElementById('toggleGrid');
+
+            if (resetBtn && gridBtn) {
+                console.log("✅ Controles 3D encontrados y listos");
+            } else {
+                console.warn("⚠️ Algunos controles 3D no se encontraron");
+            }
+        }, 1000);
     }
 
     vectorOperation(operation) {
@@ -74,22 +106,50 @@ class VMatrixApp {
                 button.classList.add('active');
                 const tabId = button.getAttribute('data-tab') + '-tab';
                 document.getElementById(tabId).classList.add('active');
+
+                // Si cambiamos a la pestaña de vectores y hay gráficos 3D, renderizar
+                if (button.getAttribute('data-tab') === 'vectors' && this.graphics3D) {
+                    setTimeout(() => {
+                        this.graphics3D.renderVectors(this.vectorCalculator.getVectorsForGraphics());
+                    }, 100);
+                }
             });
         });
     }
 
     setupMatrixEvents() {
         // Selector de tamaño
-        document.getElementById('matrixSize').addEventListener('change', (e) => {
-            this.createMatrixInputs(e.target.value);
-        });
+        const matrixSizeSelect = document.getElementById('matrixSize');
+        if (matrixSizeSelect) {
+            matrixSizeSelect.addEventListener('change', (e) => {
+                this.createMatrixInputs(e.target.value);
+            });
+        } else {
+            console.warn("⚠️ Selector de tamaño de matriz no encontrado");
+        }
 
         // Botones de operaciones
-        document.getElementById('btnMatrixAdd').addEventListener('click', () => this.matrixOperation('add'));
-        document.getElementById('btnMatrixSub').addEventListener('click', () => this.matrixOperation('subtract'));
-        document.getElementById('btnMatrixMul').addEventListener('click', () => this.matrixOperation('multiply'));
-        document.getElementById('btnDetA').addEventListener('click', () => this.calculateDeterminant('A'));
-        document.getElementById('btnDetB').addEventListener('click', () => this.calculateDeterminant('B'));
+        const matrixButtons = {
+            'btnMatrixAdd': 'add',
+            'btnMatrixSub': 'subtract',
+            'btnMatrixMul': 'multiply',
+            'btnDetA': 'A',
+            'btnDetB': 'B'
+        };
+
+        Object.entries(matrixButtons).forEach(([buttonId, operation]) => {
+            const button = document.getElementById(buttonId);
+            if (button) {
+                if (buttonId.startsWith('btnDet')) {
+                    button.addEventListener('click', () => this.calculateDeterminant(operation));
+                } else {
+                    button.addEventListener('click', () => this.matrixOperation(operation));
+                }
+                console.log(`✅ Evento configurado para: ${buttonId}`);
+            } else {
+                console.warn(`⚠️ Botón no encontrado: ${buttonId}`);
+            }
+        });
     }
 
     createMatrixInputs(size) {
@@ -98,10 +158,12 @@ class VMatrixApp {
         const matrixSize = parseInt(size[0]);
 
         const matricesContainer = document.querySelector('.matrices-container');
-        if (size === '3x3') {
-            matricesContainer.classList.add('matrices-3x3');
-        } else {
-            matricesContainer.classList.remove('matrices-3x3');
+        if (matricesContainer) {
+            if (size === '3x3') {
+                matricesContainer.classList.add('matrices-3x3');
+            } else {
+                matricesContainer.classList.remove('matrices-3x3');
+            }
         }
 
         this.renderMatrix('A', matrixSize, gridSize);
@@ -186,33 +248,52 @@ class VMatrixApp {
         const matrixA = this.matrixCalculator.matrixA;
         const matrixB = this.matrixCalculator.matrixB;
 
-        switch (operation) {
-            case 'add':
-                result = this.matrixCalculator.addMatrices(matrixA, matrixB);
-                break;
-            case 'subtract':
-                result = this.matrixCalculator.subtractMatrices(matrixA, matrixB);
-                break;
-            case 'multiply':
-                result = this.matrixCalculator.multiplyMatrices(matrixA, matrixB);
-                break;
-        }
+        try {
+            switch (operation) {
+                case 'add':
+                    result = this.matrixCalculator.addMatrices(matrixA, matrixB);
+                    break;
+                case 'subtract':
+                    result = this.matrixCalculator.subtractMatrices(matrixA, matrixB);
+                    break;
+                case 'multiply':
+                    result = this.matrixCalculator.multiplyMatrices(matrixA, matrixB);
+                    break;
+                default:
+                    throw new Error(`Operación desconocida: ${operation}`);
+            }
 
-        this.displayMatrixResult(`Resultado (${operation}):\n${this.matrixCalculator.matrixToString(result)}`);
+            this.displayMatrixResult(`Resultado (${operation}):\n${this.matrixCalculator.matrixToString(result)}`);
+        } catch (error) {
+            console.error("❌ Error en operación matricial:", error);
+            this.displayMatrixResult(`Error: ${error.message}`);
+        }
     }
 
     calculateDeterminant(matrixId) {
         const matrix = matrixId === 'A' ? this.matrixCalculator.matrixA : this.matrixCalculator.matrixB;
-        const det = this.matrixCalculator.getDeterminant(matrix);
-        this.displayMatrixResult(`Determinante de Matriz ${matrixId}: ${det}`);
+        try {
+            const det = this.matrixCalculator.getDeterminant(matrix);
+            this.displayMatrixResult(`Determinante de Matriz ${matrixId}: ${det}`);
+        } catch (error) {
+            console.error("❌ Error calculando determinante:", error);
+            this.displayMatrixResult(`Error calculando determinante: ${error.message}`);
+        }
     }
 
     displayMatrixResult(message) {
-        document.getElementById('matrix-results').innerHTML = `<pre>${message}</pre>`;
+        const resultsDiv = document.getElementById('matrix-results');
+        if (resultsDiv) {
+            resultsDiv.innerHTML = `<pre>${message}</pre>`;
+        }
     }
 }
 
 // Inicializar la aplicación cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    new VMatrixApp();
+    try {
+        new VMatrixApp();
+    } catch (error) {
+        console.error("❌ Error inicializando la aplicación:", error);
+    }
 });

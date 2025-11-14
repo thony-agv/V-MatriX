@@ -10,21 +10,22 @@
     <header class="app-header">
         <div class="marquee-container">
             <div class="marquee">
-                <span>🎯 V-MatriX • Calculadora Avanzada • Vectores • Matrices • Gráficos 3D • 🎯</span>
-                <span>🎯 V-MatriX • Calculadora Avanzada • Vectores • Matrices • Gráficos 3D • 🎯</span>
+                <span>🎯 V-MatriX • Calculadora Avanzada • Vectores • Matrices • Historial • 🎯</span>
+                <span>🎯 V-MatriX • Calculadora Avanzada • Vectores • Matrices • Historial • 🎯</span>
             </div>
         </div>
         <h1>V-MatriX</h1>
         <p>Calculadora Avanzada de Vectores y Matrices</p>
     </header>
 
+    <div class="app-container">
         <nav class="navigation">
             <button class="nav-btn" data-tab="vectors">Vectores</button>
             <button class="nav-btn active" data-tab="matrices">Matrices</button>
-            <button class="nav-btn" data-tab="graphics">Gráficos 3D</button>
+            <button class="nav-btn" data-tab="history">Historial</button>
         </nav>
 
-        <main class="main-content"></main>
+        <main class="main-content">
             <!-- Panel de Matrices -->
             <div id="matrices-tab" class="tab-content active">
                 <div class="matrix-controls">
@@ -70,12 +71,12 @@
                 </div>
             </div>
 
-           
+            <!-- Panel de Vectores -->
             <div id="vectors-tab" class="tab-content">
                 <div class="vector-controls">
                     <h3>🧭 Operaciones Vectoriales 3D</h3>
 
-                    <!-- Inputs de vectores -->
+                    <!-- Inputs de vectores CORREGIDOS -->
                     <div class="vectors-input">
                         <div class="vector-input-group">
                             <h4>Vector A</h4>
@@ -96,7 +97,7 @@
                         </div>
                     </div>
 
-                    <!-- Operaciones vectoriales -->
+                    <!-- Operaciones vectoriales CORREGIDAS -->
                     <div class="vector-operations">
                         <button id="btnVectorAdd">A + B</button>
                         <button id="btnVectorSub">A - B</button>
@@ -106,127 +107,112 @@
                         <button id="btnVectorMagB">|B| (Magnitud)</button>
                         <button id="btnVectorNormA">A Normalizado</button>
                         <button id="btnVectorNormB">B Normalizado</button>
+                        <button id="btnVectorAngle">∠ A y B (Ángulo)</button>
                     </div>
                 </div>
 
                 <div class="visualization-panel">
                     <h4>🎯 Visualización 3D</h4>
+
+                    <!-- Controles de gráficos 3D -->
+                    <div class="graphics-controls">
+                        <div class="control-group">
+                            <label>🔍 Zoom:</label>
+                            <input type="range" id="zoomControl" min="10" max="100" value="25" class="control-slider">
+                            <span id="zoomValue">25</span>
+                        </div>
+                        <div class="control-group">
+                            <label>🔄 Rotación X:</label>
+                            <input type="range" id="rotateXControl" min="0" max="360" value="0" class="control-slider">
+                            <span id="rotateXValue">0°</span>
+                        </div>
+                        <div class="control-group">
+                            <label>🔄 Rotación Y:</label>
+                            <input type="range" id="rotateYControl" min="0" max="360" value="0" class="control-slider">
+                            <span id="rotateYValue">0°</span>
+                        </div>
+                        <div class="control-buttons">
+                            <button id="resetView" class="control-btn cyber-btn">🔄 Reiniciar Vista</button>
+                            <button id="toggleGrid" class="control-btn cyber-btn">🔲 Toggle Grid</button>
+                        </div>
+                    </div>
+
                     <canvas id="vectorCanvas" width="600" height="500"></canvas>
                     <div id="vector-results" class="results-output">
                         <p>Los resultados vectoriales aparecerán aquí...</p>
                     </div>
                 </div>
-                <div id="graphics-tab" class="tab-content">
-                    <div class="graphics-controls">
-                        <h3>⚡ Sistema de Partículas 3D</h3>
+            </div>
 
-                        <!-- Configuración de partículas -->
-                        <div class="particle-config">
-                            <div class="config-group">
-                                <label>Número de Partículas:</label>
-                                <div class="slider-container">
-                                    <input type="range" id="particleCount" min="10" max="500" value="50" class="control-slider">
-                                    <span id="countValue" class="slider-value">50</span>
-                                </div>
-                            </div>
-
-                            <div class="config-group">
-                                <label>Velocidad:</label>
-                                <div class="slider-container">
-                                    <input type="range" id="particleSpeed" min="1" max="20" value="5" class="control-slider">
-                                    <span id="speedValue" class="slider-value">5</span>
-                                </div>
-                            </div>
-
-                            <div class="config-group">
-                                <label>Tamaño:</label>
-                                <div class="slider-container">
-                                    <input type="range" id="particleSize" min="1" max="10" value="3" class="control-slider">
-                                    <span id="sizeValue" class="slider-value">3</span>
-                                </div>
-                            </div>
-
-                            <div class="config-group">
-                                <label>Fuerzas:</label>
-                                <div class="checkbox-group">
-                                    <label><input type="checkbox" id="gravityForce" checked> Gravedad</label>
-                                    <label><input type="checkbox" id="magneticForce"> Campo Magnético</label>
-                                    <label><input type="checkbox" id="windForce"> Viento</label>
-                                    <label><input type="checkbox" id="vortexForce"> Vórtice</label>
-                                </div>
-                            </div>
-
-                            <div class="config-group">
-                                <label>Comportamiento:</label>
-                                <div class="checkbox-group">
-                                    <label><input type="checkbox" id="enableCollisions" checked> Colisiones</label>
-                                    <label><input type="checkbox" id="enableTrails"> Estelas</label>
-                                    <label><input type="checkbox" id="enableGlow"> Efecto Glow</label>
-                                </div>
-                            </div>
-
-                            <div class="config-group">
-                                <label>Color de Partículas:</label>
-                                <select id="particleColor">
-                                    <option value="rainbow">🌈 Arcoíris</option>
-                                    <option value="cyan">🔵 Cian</option>
-                                    <option value="pink">🔴 Rosa</option>
-                                    <option value="gold">🟡 Dorado</option>
-                                    <option value="green">🟢 Verde</option>
-                                    <option value="purple">🟣 Púrpura</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Controles de simulación -->
-                        <div class="simulation-controls">
-                            <button id="startSimulation" class="control-btn">▶️ Iniciar Simulación</button>
-                            <button id="pauseSimulation" class="control-btn">⏸️ Pausar</button>
-                            <button id="resetSimulation" class="control-btn">🔄 Reiniciar</button>
-                            <button id="addParticle" class="control-btn">✨ Agregar 10 Partículas</button>
-                            <button id="clearParticles" class="control-btn">🗑️ Limpiar Todo</button>
-                        </div>
-
-                        <!-- Estadísticas en tiempo real -->
-                        <div class="simulation-stats">
-                            <h4>📈 Estadísticas en Tiempo Real</h4>
-                            <div id="particle-stats">
-                                <p>🟢 Partículas activas: <span id="activeParticles">0</span></p>
-                                <p>⚡ Energía total: <span id="totalEnergy">0</span></p>
-                                <p>🎯 FPS: <span id="fpsCounter">0</span></p>
-                                <p>🕒 Tiempo: <span id="simulationTime">0s</span></p>
-                            </div>
+            <!-- Panel de Historial -->
+            <div id="history-tab" class="tab-content">
+                <div class="history-container">
+                    <!-- Marquee Cyberpunk -->
+                    <div class="history-marquee">
+                        <div class="history-marquee-content">
+                            <div class="history-marquee-text">⚡ HISTORIAL DE OPERACIONES ⚡</div>
+                            <div class="history-marquee-text">🔮 V-MATRIX CYBERPUNK 2077 🔮</div>
+                            <div class="history-marquee-text">🎯 REGISTRO DE CÁLCULOS 🎯</div>
                         </div>
                     </div>
 
-                    <div class="visualization-panel">
-                        <div class="particle-header">
-                            <h4>🌌 Simulación de Partículas 3D</h4>
-                            <div class="particle-legend">
-                                <span style="color: #00f0ff">● Partículas</span>
-                                <span style="color: #ff1493">● Colisiones</span>
-                                <span style="color: #ffd700">● Energía Alta</span>
-                            </div>
+                    <div class="history-controls">
+                        <div class="history-actions">
+                            <button id="clearHistory" class="history-btn danger">🗑️ PURGAR HISTORIAL</button>
+                            <button id="exportHistory" class="history-btn">📤 EXPORTAR DATOS</button>
+                            <button id="importHistory" class="history-btn">📥 IMPORTAR DATOS</button>
+                            <input type="file" id="historyFileInput" style="display: none;">
                         </div>
-                        <canvas id="particleCanvas" width="800" height="600"></canvas>
-                        <div class="particle-info">
-                            <h5>🔍 Información de Simulación</h5>
-                            <div id="particle-data" class="results-output">
-                                <p>Presiona "Iniciar Simulación" para comenzar...</p>
-                                <p>💡 <strong>Controles:</strong></p>
-                                <p>• 🖱️ Arrastra para rotar la cámara</p>
-                                <p>• 🎯 Rueda del mouse para zoom</p>
-                                <p>• ✨ Click para agregar partículas</p>
-                                <p>• 🗑️ Doble click para limpiar</p>
+
+                        <div class="history-filters">
+                            <select id="filterType">
+                                <option value="all">🌐 TODOS LOS TIPOS</option>
+                                <option value="vector">➡️ VECTORES</option>
+                                <option value="matrix">🔲 MATRICES</option>
+                            </select>
+
+                            <select id="filterOperation">
+                                <option value="all">⚡ TODAS LAS OPERACIONES</option>
+                                <option value="sum">➕ SUMA</option>
+                                <option value="subtract">➖ RESTA</option>
+                                <option value="multiply">✖️ MULTIPLICACIÓN</option>
+                                <option value="cross">❌ PRODUCTO CRUZ</option>
+                                <option value="dot">🔘 PRODUCTO PUNTO</option>
+                                <option value="magnitude">📏 MAGNITUD</option>
+                                <option value="normalize">🎯 NORMALIZACIÓN</option>
+                                <option value="angle">📐 ÁNGULO</option>
+                                <option value="determinant">🔍 DETERMINANTE</option>
+                            </select>
+
+                            <input type="text" id="searchHistory" placeholder="🔍 BUSCAR EN REGISTROS...">
+                        </div>
+                    </div>
+
+                    <div class="history-list">
+                        <div class="history-stats">
+                            <span id="totalOperations">📊 TOTAL: 0 OPERACIONES</span>
+                            <span id="historySize">💾 TAMAÑO: 0 KB</span>
+                            <span id="lastUpdate">🕒 ACTUALIZADO: --:--:--</span>
+                        </div>
+
+                        <div id="historyItems" class="history-items">
+                            <div class="empty-history">
+                                <div class="empty-icon">🔮</div>
+                                <h4>REGISTROS VACÍOS</h4>
+                                <p>Realiza operaciones para generar datos en el historial</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </main>
+    </div>
 
-            <script src="js/matrixOperations.js"></script>
-            <script src="js/vectorOperations.js"></script>
-            <script src="js/graphics3D.js"></script>
-            <script src="js/app.js"></script>
+    <!-- ORDEN CORREGIDO DE SCRIPTS -->
+    <script src="js/graphics3D.js"></script>
+    <script src="js/matrixOperations.js"></script>
+    <script src="js/vectorOperations.js"></script>
+    <script src="js/historyManager.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

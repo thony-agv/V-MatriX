@@ -27,35 +27,62 @@ class MatrixCalculator {
         console.log('Renderizando matrices:', this.matrixSize);
     }
 
-    // OPERACIONES MATRICIALES
+    // === SISTEMA DE HISTORIAL INTEGRADO ===
+
+    // Función para registrar operaciones en el historial
+    registerMatrixOperation(operation, matrixA, matrixB, result, duration = 0) {
+        const operationEvent = new CustomEvent('operationPerformed', {
+            detail: {
+                type: 'matrix',
+                operation: operation,
+                inputA: matrixA,
+                inputB: matrixB,
+                result: result,
+                duration: duration
+            }
+        });
+        document.dispatchEvent(operationEvent);
+    }
+
+    // OPERACIONES MATRICIALES CON HISTORIAL
+
     addMatrices(matrixA, matrixB) {
+        const startTime = performance.now(); // Iniciar temporizador
         const size = matrixA.length;
         const result = this.createEmptyMatrix(size);
-        
+
         for (let i = 0; i < size; i++) {
             for (let j = 0; j < size; j++) {
                 result[i][j] = matrixA[i][j] + matrixB[i][j];
             }
         }
+
+        // Registrar en historial
+        this.registerMatrixOperation('sum', matrixA, matrixB, result, performance.now() - startTime);
         return result;
     }
 
     subtractMatrices(matrixA, matrixB) {
+        const startTime = performance.now(); // Iniciar temporizador
         const size = matrixA.length;
         const result = this.createEmptyMatrix(size);
-        
+
         for (let i = 0; i < size; i++) {
             for (let j = 0; j < size; j++) {
                 result[i][j] = matrixA[i][j] - matrixB[i][j];
             }
         }
+
+        // Registrar en historial
+        this.registerMatrixOperation('subtract', matrixA, matrixB, result, performance.now() - startTime);
         return result;
     }
 
     multiplyMatrices(matrixA, matrixB) {
+        const startTime = performance.now(); // Iniciar temporizador
         const size = matrixA.length;
         const result = this.createEmptyMatrix(size);
-        
+
         for (let i = 0; i < size; i++) {
             for (let j = 0; j < size; j++) {
                 for (let k = 0; k < size; k++) {
@@ -63,6 +90,9 @@ class MatrixCalculator {
                 }
             }
         }
+
+        // Registrar en historial
+        this.registerMatrixOperation('multiply', matrixA, matrixB, result, performance.now() - startTime);
         return result;
     }
 
@@ -74,21 +104,29 @@ class MatrixCalculator {
         const [a, b, c] = matrix[0];
         const [d, e, f] = matrix[1];
         const [g, h, i] = matrix[2];
-        
-        return a*(e*i - f*h) - b*(d*i - f*g) + c*(d*h - e*g);
+
+        return a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
     }
 
     getDeterminant(matrix) {
+        const startTime = performance.now(); // Iniciar temporizador
+        let result;
+
         if (matrix.length === 2) {
-            return this.determinant2x2(matrix);
+            result = this.determinant2x2(matrix);
         } else if (matrix.length === 3) {
-            return this.determinant3x3(matrix);
+            result = this.determinant3x3(matrix);
+        } else {
+            result = 0;
         }
-        return 0;
+
+        // Registrar en historial (solo una matriz de entrada)
+        this.registerMatrixOperation('determinant', matrix, null, result, performance.now() - startTime);
+        return result;
     }
 
     matrixToString(matrix) {
-        return matrix.map(row => 
+        return matrix.map(row =>
             `[${row.map(val => val.toString().padStart(3)).join(' ')}]`
         ).join('\n');
     }

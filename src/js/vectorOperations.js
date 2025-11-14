@@ -7,6 +7,23 @@ class VectorCalculator {
         console.log("🔄 Calculadora de vectores inicializada");
     }
 
+    // === SISTEMA DE HISTORIAL INTEGRADO ===
+
+    // Función para registrar operaciones en el historial
+    registerVectorOperation(operation, vectorA, vectorB, result, duration = 0) {
+        const operationEvent = new CustomEvent('operationPerformed', {
+            detail: {
+                type: 'vector',
+                operation: operation,
+                inputA: vectorA,
+                inputB: vectorB,
+                result: result,
+                duration: duration
+            }
+        });
+        document.dispatchEvent(operationEvent);
+    }
+
     // Obtener valores actuales de los inputs
     getVectorValues() {
         try {
@@ -23,7 +40,7 @@ class VectorCalculator {
                     y: parseFloat(vectorAy.value) || 0,
                     z: parseFloat(vectorAz.value) || 0
                 };
-                
+
                 this.vectors.B = {
                     x: parseFloat(vectorBx.value) || 0,
                     y: parseFloat(vectorBy.value) || 0,
@@ -41,61 +58,104 @@ class VectorCalculator {
         }
     }
 
-    // OPERACIONES VECTORIALES
+    // OPERACIONES VECTORIALES CON HISTORIAL
+
     addVectors(v1, v2) {
-        return {
+        const startTime = performance.now(); // Iniciar temporizador
+        const result = {
             x: v1.x + v2.x,
             y: v1.y + v2.y,
             z: v1.z + v2.z
         };
+
+        // Registrar en historial
+        this.registerVectorOperation('sum', v1, v2, result, performance.now() - startTime);
+        return result;
     }
 
     subtractVectors(v1, v2) {
-        return {
+        const startTime = performance.now(); // Iniciar temporizador
+        const result = {
             x: v1.x - v2.x,
             y: v1.y - v2.y,
             z: v1.z - v2.z
         };
+
+        // Registrar en historial
+        this.registerVectorOperation('subtract', v1, v2, result, performance.now() - startTime);
+        return result;
     }
 
     dotProduct(v1, v2) {
-        return (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
+        const startTime = performance.now(); // Iniciar temporizador
+        const result = (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
+
+        // Registrar en historial
+        this.registerVectorOperation('dot', v1, v2, result, performance.now() - startTime);
+        return result;
     }
 
     crossProduct(v1, v2) {
-        return {
+        const startTime = performance.now(); // Iniciar temporizador
+        const result = {
             x: (v1.y * v2.z) - (v1.z * v2.y),
             y: (v1.z * v2.x) - (v1.x * v2.z),
             z: (v1.x * v2.y) - (v1.y * v2.x)
         };
+
+        // Registrar en historial
+        this.registerVectorOperation('cross', v1, v2, result, performance.now() - startTime);
+        return result;
     }
 
     magnitude(vector) {
-        return Math.sqrt(vector.x**2 + vector.y**2 + vector.z**2);
+        const startTime = performance.now(); // Iniciar temporizador
+        const result = Math.sqrt(vector.x ** 2 + vector.y ** 2 + vector.z ** 2);
+
+        // Registrar en historial (solo un vector de entrada)
+        this.registerVectorOperation('magnitude', vector, null, result, performance.now() - startTime);
+        return result;
     }
 
     normalize(vector) {
+        const startTime = performance.now(); // Iniciar temporizador
         const mag = this.magnitude(vector);
-        if (mag === 0) return { x: 0, y: 0, z: 0 };
-        
-        return {
-            x: vector.x / mag,
-            y: vector.y / mag,
-            z: vector.z / mag
-        };
+        let result;
+
+        if (mag === 0) {
+            result = { x: 0, y: 0, z: 0 };
+        } else {
+            result = {
+                x: vector.x / mag,
+                y: vector.y / mag,
+                z: vector.z / mag
+            };
+        }
+
+        // Registrar en historial (solo un vector de entrada)
+        this.registerVectorOperation('normalize', vector, null, result, performance.now() - startTime);
+        return result;
     }
 
     angleBetweenVectors(v1, v2) {
+        const startTime = performance.now(); // Iniciar temporizador
         const dot = this.dotProduct(v1, v2);
         const mag1 = this.magnitude(v1);
         const mag2 = this.magnitude(v2);
-        
-        if (mag1 === 0 || mag2 === 0) return 0;
-        
-        const cosTheta = dot / (mag1 * mag2);
-        // Asegurar que esté en el rango [-1, 1] para Math.acos
-        const clampedCos = Math.max(-1, Math.min(1, cosTheta));
-        return (Math.acos(clampedCos) * 180) / Math.PI;
+
+        let result;
+        if (mag1 === 0 || mag2 === 0) {
+            result = 0;
+        } else {
+            const cosTheta = dot / (mag1 * mag2);
+            // Asegurar que esté en el rango [-1, 1] para Math.acos
+            const clampedCos = Math.max(-1, Math.min(1, cosTheta));
+            result = (Math.acos(clampedCos) * 180) / Math.PI;
+        }
+
+        // Registrar en historial como operación especial
+        this.registerVectorOperation('angle', v1, v2, result, performance.now() - startTime);
+        return result;
     }
 
     // Realizar operación
@@ -105,7 +165,7 @@ class VectorCalculator {
                 this.displayResult("Error", "No se pudieron obtener los valores de los vectores");
                 return null;
             }
-            
+
             const vA = this.vectors.A;
             const vB = this.vectors.B;
             let result;
@@ -113,7 +173,7 @@ class VectorCalculator {
 
             console.log(`🎯 Ejecutando operación: ${operation}`, vA, vB);
 
-            switch(operation) {
+            switch (operation) {
                 case 'add':
                     result = this.addVectors(vA, vB);
                     operationName = 'Suma A + B';
@@ -174,7 +234,7 @@ class VectorCalculator {
             }
 
             let resultText = `🎯 ${operationName}\n\n`;
-            
+
             if (vA && vB) {
                 resultText += `📊 Vector A: (${vA.x}, ${vA.y}, ${vA.z})\n`;
                 resultText += `📊 Vector B: (${vB.x}, ${vB.y}, ${vB.z})\n\n`;
@@ -190,7 +250,7 @@ class VectorCalculator {
             } else {
                 // Es un escalar
                 resultText += `✨ Resultado: ${result.toFixed(6)}`;
-                
+
                 if (operationName.includes('Ángulo')) {
                     resultText += '°';
                 }
