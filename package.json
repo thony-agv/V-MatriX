@@ -1,13 +1,40 @@
 {
   "name": "v-matrix",
   "version": "1.0.0",
-  "description": "Calculadora de vectores y matrices",
+  "description": "Calculadora CyberPunk de Vectores y Matrices",
   "main": "src/main.js",
   "scripts": {
     "dev": "electron . --dev",
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder",
+    "build-win": "electron-builder --win",
+    "build-portable": "electron-builder --win portable"
   },
   "devDependencies": {
-    "electron": "^22.3.27"
-  }
+    "electron": "^22.3.27",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.vmatrix.algebra",
+    "productName": "V-MatriX",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "css/**/*",
+      "js/**/*",
+      "index.html",
+      "package.json"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "assets/icon.ico"
+    },
+    "portable": {
+      "artifactName": "V-MatriX.exe"
+    }
+  },
+  "author": "Tu Nombre",
+  "license": "MIT"
 }

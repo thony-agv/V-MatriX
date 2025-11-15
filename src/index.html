@@ -3,230 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V-MatriX</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>V-MatriX - CyberPunk 2077</title>
+    <link rel="stylesheet" href="css/cyberpunk-loader.css">
 </head>
-<body>
-    <header class="app-header">
-        <div class="marquee-container">
-            <div class="marquee">
-                <span>🎯 V-MatriX • Calculadora Avanzada • Vectores • Matrices • Gráficos 3D • 🎯</span>
-                <span>🎯 V-MatriX • Calculadora Avanzada • Vectores • Matrices • Gráficos 3D • 🎯</span>
+<body class="cyberpunk-body">
+    <!-- Fondo Cyberpunk -->
+    <div class="cyberpunk-bg"></div>
+    
+    <!-- Contenedor Principal -->
+    <div class="cyberpunk-container">
+        <!-- Logo y Título -->
+        <div class="cyberpunk-header">
+            <div class="cyberpunk-logo">
+                <div class="logo-glitch" data-text="V-MATRIX">V-MATRIX</div>
+                <div class="logo-subtitle">CYBERPUNK 2077 EDITION</div>
             </div>
         </div>
-        <h1>V-MatriX</h1>
-        <p>Calculadora Avanzada de Vectores y Matrices</p>
-    </header>
 
-        <nav class="navigation">
-            <button class="nav-btn" data-tab="vectors">Vectores</button>
-            <button class="nav-btn active" data-tab="matrices">Matrices</button>
-            <button class="nav-btn" data-tab="graphics">Gráficos 3D</button>
-        </nav>
+        <!-- Tarjeta de Bienvenida -->
+        <div class="cyberpunk-card">
+            <div class="card-header">
+                <h2 class="card-title">⚡ SISTEMA DE CÁLCULO VECTORIAL</h2>
+                <div class="card-subtitle">ACCESO AUTORIZADO SOLO PARA USUARIOS VERIFICADOS</div>
+            </div>
 
-        <main class="main-content"></main>
-            <!-- Panel de Matrices -->
-            <div id="matrices-tab" class="tab-content active">
-                <div class="matrix-controls">
-                    <h3>🔄 Operaciones Matriciales</h3>
-
-                    <!-- Selector de tamaño -->
-                    <div class="size-selector">
-                        <label>Tamaño de matriz:</label>
-                        <select id="matrixSize">
-                            <option value="2x2">2x2</option>
-                            <option value="3x3">3x3</option>
-                        </select>
+            <!-- Selector de Modo -->
+            <div class="mode-selector">
+                <div class="mode-option active" data-mode="calculator">
+                    <div class="mode-icon">🧮</div>
+                    <div class="mode-text">
+                        <h3>CALCULADORA AVANZADA</h3>
+                        <p>Operaciones con Vectores y Matrices</p>
                     </div>
-
-                    <!-- Inputs de matrices -->
-                    <div class="matrices-container">
-                        <div class="matrix-input">
-                            <h4>Matriz A</h4>
-                            <div id="matrixA-inputs" class="matrix-grid"></div>
-                        </div>
-
-                        <div class="matrix-input">
-                            <h4>Matriz B</h4>
-                            <div id="matrixB-inputs" class="matrix-grid"></div>
-                        </div>
-                    </div>
-
-                    <!-- Operaciones -->
-                    <div class="matrix-operations">
-                        <button id="btnMatrixAdd">A + B</button>
-                        <button id="btnMatrixSub">A - B</button>
-                        <button id="btnMatrixMul">A × B</button>
-                        <button id="btnDetA">Det(A)</button>
-                        <button id="btnDetB">Det(B)</button>
-                    </div>
+                    <div class="mode-indicator">▶</div>
                 </div>
 
-                <div class="visualization-panel">
-                    <h4>📊 Resultados Matriciales</h4>
-                    <div id="matrix-results" class="results-output">
-                        <p>Los resultados aparecerán aquí...</p>
+                <div class="mode-option" data-mode="tutorial">
+                    <div class="mode-icon">📚</div>
+                    <div class="mode-text">
+                        <h3>TUTORIAL INTERACTIVO</h3>
+                        <p>Aprende Álgebra Lineal</p>
                     </div>
+                    <div class="mode-indicator">▶</div>
+                </div>
+
+                <div class="mode-option" data-mode="simulation">
+                    <div class="mode-icon">🎮</div>
+                    <div class="mode-text">
+                        <h3>SIMULACIÓN 3D</h3>
+                        <p>Visualización en Tiempo Real</p>
+                    </div>
+                    <div class="mode-indicator">▶</div>
                 </div>
             </div>
 
-           
-            <div id="vectors-tab" class="tab-content">
-                <div class="vector-controls">
-                    <h3>🧭 Operaciones Vectoriales 3D</h3>
-
-                    <!-- Inputs de vectores -->
-                    <div class="vectors-input">
-                        <div class="vector-input-group">
-                            <h4>Vector A</h4>
-                            <div class="coord-inputs">
-                                <input type="number" id="vectorAx" placeholder="X" value="3">
-                                <input type="number" id="vectorAy" placeholder="Y" value="4">
-                                <input type="number" id="vectorAz" placeholder="Z" value="2">
-                            </div>
-                        </div>
-
-                        <div class="vector-input-group">
-                            <h4>Vector B</h4>
-                            <div class="coord-inputs">
-                                <input type="number" id="vectorBx" placeholder="X" value="1">
-                                <input type="number" id="vectorBy" placeholder="Y" value="-2">
-                                <input type="number" id="vectorBz" placeholder="Z" value="5">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Operaciones vectoriales -->
-                    <div class="vector-operations">
-                        <button id="btnVectorAdd">A + B</button>
-                        <button id="btnVectorSub">A - B</button>
-                        <button id="btnVectorDot">A · B (Punto)</button>
-                        <button id="btnVectorCross">A × B (Cruz)</button>
-                        <button id="btnVectorMagA">|A| (Magnitud)</button>
-                        <button id="btnVectorMagB">|B| (Magnitud)</button>
-                        <button id="btnVectorNormA">A Normalizado</button>
-                        <button id="btnVectorNormB">B Normalizado</button>
-                    </div>
+            <!-- Información del Sistema -->
+            <div class="system-info">
+                <div class="info-item">
+                    <span class="info-label">VERSIÓN:</span>
+                    <span class="info-value">2.0.7.7</span>
                 </div>
-
-                <div class="visualization-panel">
-                    <h4>🎯 Visualización 3D</h4>
-                    <canvas id="vectorCanvas" width="600" height="500"></canvas>
-                    <div id="vector-results" class="results-output">
-                        <p>Los resultados vectoriales aparecerán aquí...</p>
-                    </div>
+                <div class="info-item">
+                    <span class="info-label">STATUS:</span>
+                    <span class="info-value online">● SISTEMA ONLINE</span>
                 </div>
-                <div id="graphics-tab" class="tab-content">
-                    <div class="graphics-controls">
-                        <h3>⚡ Sistema de Partículas 3D</h3>
-
-                        <!-- Configuración de partículas -->
-                        <div class="particle-config">
-                            <div class="config-group">
-                                <label>Número de Partículas:</label>
-                                <div class="slider-container">
-                                    <input type="range" id="particleCount" min="10" max="500" value="50" class="control-slider">
-                                    <span id="countValue" class="slider-value">50</span>
-                                </div>
-                            </div>
-
-                            <div class="config-group">
-                                <label>Velocidad:</label>
-                                <div class="slider-container">
-                                    <input type="range" id="particleSpeed" min="1" max="20" value="5" class="control-slider">
-                                    <span id="speedValue" class="slider-value">5</span>
-                                </div>
-                            </div>
-
-                            <div class="config-group">
-                                <label>Tamaño:</label>
-                                <div class="slider-container">
-                                    <input type="range" id="particleSize" min="1" max="10" value="3" class="control-slider">
-                                    <span id="sizeValue" class="slider-value">3</span>
-                                </div>
-                            </div>
-
-                            <div class="config-group">
-                                <label>Fuerzas:</label>
-                                <div class="checkbox-group">
-                                    <label><input type="checkbox" id="gravityForce" checked> Gravedad</label>
-                                    <label><input type="checkbox" id="magneticForce"> Campo Magnético</label>
-                                    <label><input type="checkbox" id="windForce"> Viento</label>
-                                    <label><input type="checkbox" id="vortexForce"> Vórtice</label>
-                                </div>
-                            </div>
-
-                            <div class="config-group">
-                                <label>Comportamiento:</label>
-                                <div class="checkbox-group">
-                                    <label><input type="checkbox" id="enableCollisions" checked> Colisiones</label>
-                                    <label><input type="checkbox" id="enableTrails"> Estelas</label>
-                                    <label><input type="checkbox" id="enableGlow"> Efecto Glow</label>
-                                </div>
-                            </div>
-
-                            <div class="config-group">
-                                <label>Color de Partículas:</label>
-                                <select id="particleColor">
-                                    <option value="rainbow">🌈 Arcoíris</option>
-                                    <option value="cyan">🔵 Cian</option>
-                                    <option value="pink">🔴 Rosa</option>
-                                    <option value="gold">🟡 Dorado</option>
-                                    <option value="green">🟢 Verde</option>
-                                    <option value="purple">🟣 Púrpura</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Controles de simulación -->
-                        <div class="simulation-controls">
-                            <button id="startSimulation" class="control-btn">▶️ Iniciar Simulación</button>
-                            <button id="pauseSimulation" class="control-btn">⏸️ Pausar</button>
-                            <button id="resetSimulation" class="control-btn">🔄 Reiniciar</button>
-                            <button id="addParticle" class="control-btn">✨ Agregar 10 Partículas</button>
-                            <button id="clearParticles" class="control-btn">🗑️ Limpiar Todo</button>
-                        </div>
-
-                        <!-- Estadísticas en tiempo real -->
-                        <div class="simulation-stats">
-                            <h4>📈 Estadísticas en Tiempo Real</h4>
-                            <div id="particle-stats">
-                                <p>🟢 Partículas activas: <span id="activeParticles">0</span></p>
-                                <p>⚡ Energía total: <span id="totalEnergy">0</span></p>
-                                <p>🎯 FPS: <span id="fpsCounter">0</span></p>
-                                <p>🕒 Tiempo: <span id="simulationTime">0s</span></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="visualization-panel">
-                        <div class="particle-header">
-                            <h4>🌌 Simulación de Partículas 3D</h4>
-                            <div class="particle-legend">
-                                <span style="color: #00f0ff">● Partículas</span>
-                                <span style="color: #ff1493">● Colisiones</span>
-                                <span style="color: #ffd700">● Energía Alta</span>
-                            </div>
-                        </div>
-                        <canvas id="particleCanvas" width="800" height="600"></canvas>
-                        <div class="particle-info">
-                            <h5>🔍 Información de Simulación</h5>
-                            <div id="particle-data" class="results-output">
-                                <p>Presiona "Iniciar Simulación" para comenzar...</p>
-                                <p>💡 <strong>Controles:</strong></p>
-                                <p>• 🖱️ Arrastra para rotar la cámara</p>
-                                <p>• 🎯 Rueda del mouse para zoom</p>
-                                <p>• ✨ Click para agregar partículas</p>
-                                <p>• 🗑️ Doble click para limpiar</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="info-item">
+                    <span class="info-label">USUARIOS:</span>
+                    <span class="info-value">1 ACTIVO</span>
                 </div>
             </div>
 
-            <script src="js/matrixOperations.js"></script>
-            <script src="js/vectorOperations.js"></script>
-            <script src="js/graphics3D.js"></script>
-            <script src="js/app.js"></script>
+            <!-- Botón de Acceso -->
+            <div class="access-control">
+                <button id="accessBtn" class="cyberpunk-btn">
+                    <span class="btn-text">INICIAR SISTEMA</span>
+                    <span class="btn-glow"></span>
+                    <span class="btn-particles"></span>
+                </button>
+                
+                <div class="access-code">
+                    <span>CODIGO: </span>
+                    <span class="code-display">V3CT0R-M4TR1X-2077</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra de Progreso -->
+        <div class="cyberpunk-footer">
+            <div class="progress-container">
+                <div class="progress-label">INICIALIZANDO SISTEMA...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                    <div class="progress-glow"></div>
+                </div>
+                <div class="progress-stats">
+                    <span>CPU: 12%</span>
+                    <span>RAM: 24%</span>
+                    <span>GPU: 8%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Efectos de Partículas -->
+    <div class="cyberpunk-particles"></div>
+
+    <script src="js/cyberpunk-loader.js"></script>
 </body>
 </html>
