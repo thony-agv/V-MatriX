@@ -8,11 +8,12 @@
     "start": "electron .",
     "build": "electron-builder",
     "build-win": "electron-builder --win",
-    "build-portable": "electron-builder --win portable"
+    "build-portable": "electron-builder --win portable",
+    "dist": "electron-builder --publish=never"
   },
   "devDependencies": {
     "electron": "^22.3.27",
-    "electron-builder": "^24.13.3"
+    "electron-builder": "^24.6.4"
   },
   "build": {
     "appId": "com.vmatrix.algebra",
@@ -25,7 +26,8 @@
       "css/**/*",
       "js/**/*",
       "index.html",
-      "package.json"
+      "package.json",
+      "assets/icon.ico"
     ],
     "win": {
       "target": "portable",
@@ -35,6 +37,6 @@
       "artifactName": "V-MatriX.exe"
     }
   },
-  "author": "Tu Nombre",
+  "author": "V-MatriX",
   "license": "MIT"
 }
