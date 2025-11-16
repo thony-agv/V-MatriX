@@ -1,23 +1,18 @@
-# 🎯 V-MatriX
+# 🚀 V-MatriX - CyberPunk 2077 Edition
 
-Calculadora avanzada de vectores y matrices con visualización gráfica, construida con Electron.
+Calculadora avanzada de vectores y matrices con visualización 3D interactiva.
 
-## 🚀 Características
+## ✨ Características
+- 🧮 Operaciones con vectores 3D
+- 🔢 Cálculos matriciales  
+- 🎨 Visualización 3D interactiva
+- 📊 Historial de operaciones
+- 🎯 Diseño CyberPunk 2077
 
-- ✅ Operaciones con vectores (suma, resta, producto punto, producto cruz)
-- ✅ Operaciones con matrices 
-- ✅ Visualización gráfica 2D/3D de vectores
-- ✅ Interfaz intuitiva y moderna
+## 🌐 Demo Online
+[Ver en vivo](https://tunombre.github.io/v-matrix)
 
 ## 🛠️ Tecnologías
-
-- Electron
-- HTML5 Canvas
-- JavaScript
-- CSS3
-
-## 📦 Instalación
-
-```bash
-npm install
-npm run dev
+- HTML5, CSS3, JavaScript
+- Canvas API para gráficos 3D
+- Electron (versión desktop)
