@@ -6,10 +6,13 @@
   "scripts": {
     "dev": "electron . --dev",
     "start": "electron .",
-    "build": "electron-builder",
+    "build:electron": "electron-builder",
+    "build:node": "node build.js",
+    "build": "npm run build:electron && npm run build:node",
     "build-win": "electron-builder --win",
     "build-portable": "electron-builder --win portable",
-    "dist": "electron-builder --publish=never"
+    "dist": "electron-builder --publish=never",
+    "deploy": "npm run build"
   },
   "devDependencies": {
     "electron": "^22.3.27",

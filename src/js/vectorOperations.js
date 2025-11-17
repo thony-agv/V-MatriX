@@ -1,8 +1,8 @@
 class VectorCalculator {
     constructor() {
         this.vectors = {
-            A: { x: 3, y: 4, z: 2 },
-            B: { x: 1, y: -2, z: 5 }
+            A: { x: 0, y: 0, z: 0 },
+            B: { x: 0, y: 0, z: 0 }
         };
         console.log("🔄 Calculadora de vectores inicializada");
     }

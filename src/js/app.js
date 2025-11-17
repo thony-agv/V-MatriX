@@ -29,7 +29,7 @@ class VMatrixApp {
         console.log("✅ V-MatriX inicializado correctamente");
     }
 
-    // MÉTODO FALTANTE - AGREGAR ESTO
+    // método para configurar eventos de vectores
     setupVectorEvents() {
         console.log("🔄 Configurando eventos de vectores...");
 
